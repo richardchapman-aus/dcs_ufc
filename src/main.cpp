@@ -134,28 +134,24 @@ void setHidUfcEncoder () {
 }
 
 void setHidUfcKeypad () {
-  uint8_t m;
-  byte mskA1=0b00000001,mskA2=0b00000010,mskA3=0b00000100,mskA4=0b00001000;
-  byte mskB1=0b00001000,mskB2=0b00000100,mskB3=0b00000010,mskB4=0b00000001;
-  (LoopState.keyPadM1&mskA1) ? HidUfc.press(UFC_KEYPAD_1) : HidUfc.release(UFC_KEYPAD_1);
-  (LoopState.keyPadM1&mskA2) ? HidUfc.press(UFC_KEYPAD_2) : HidUfc.release(UFC_KEYPAD_2);
-  (LoopState.keyPadM1&mskA3) ? HidUfc.press(UFC_KEYPAD_3) : HidUfc.release(UFC_KEYPAD_3);
-  (LoopState.keyPadM1&mskA4) ? HidUfc.press(UFC_KEYPAD_A) : HidUfc.release(UFC_KEYPAD_A);
-
-  (LoopState.keyPadM1&mskA1) ? HidUfc.press(UFC_KEYPAD_4) : HidUfc.release(UFC_KEYPAD_4);
-  (LoopState.keyPadM1&mskA2) ? HidUfc.press(UFC_KEYPAD_5) : HidUfc.release(UFC_KEYPAD_5);
-  (LoopState.keyPadM1&mskA3) ? HidUfc.press(UFC_KEYPAD_6) : HidUfc.release(UFC_KEYPAD_6);
-  (LoopState.keyPadM1&mskA4) ? HidUfc.press(UFC_KEYPAD_B) : HidUfc.release(UFC_KEYPAD_B);
-
-  (LoopState.keyPadM1&mskB1) ? HidUfc.press(UFC_KEYPAD_7) : HidUfc.release(UFC_KEYPAD_7);
-  (LoopState.keyPadM1&mskB2) ? HidUfc.press(UFC_KEYPAD_8) : HidUfc.release(UFC_KEYPAD_8);
-  (LoopState.keyPadM1&mskB3) ? HidUfc.press(UFC_KEYPAD_9) : HidUfc.release(UFC_KEYPAD_9);
-  (LoopState.keyPadM1&mskB4) ? HidUfc.press(UFC_KEYPAD_C) : HidUfc.release(UFC_KEYPAD_C);
-
-  (LoopState.keyPadM1&mskB1) ? HidUfc.press(UFC_KEYPAD_STAR) : HidUfc.release(UFC_KEYPAD_STAR);
-  (LoopState.keyPadM1&mskB2) ? HidUfc.press(UFC_KEYPAD_0) : HidUfc.release(UFC_KEYPAD_0);
-  (LoopState.keyPadM1&mskB3) ? HidUfc.press(UFC_KEYPAD_HASH) : HidUfc.release(UFC_KEYPAD_HASH);
-  (LoopState.keyPadM1&mskB4) ? HidUfc.press(UFC_KEYPAD_D) : HidUfc.release(UFC_KEYPAD_D);
+  byte mskM1=0b10000000,mskM2=0b01000000,mskM3=0b00100000,mskM4=0b00010000;
+  byte mskN1=0b00000001,mskN2=0b00000010,mskN3=0b00000100,mskN4=0b00001000;
+  ((LoopState.keyPadM1&mskM1)&&(LoopState.keyPadM1&mskN1)) ? HidUfc.press(UFC_KEYPAD_1) : HidUfc.release(UFC_KEYPAD_1);
+  ((LoopState.keyPadM1&mskM1)&&(LoopState.keyPadM1&mskN2)) ? HidUfc.press(UFC_KEYPAD_3) : HidUfc.release(UFC_KEYPAD_3);
+  ((LoopState.keyPadM1&mskM1)&&(LoopState.keyPadM1&mskN3)) ? HidUfc.press(UFC_KEYPAD_2) : HidUfc.release(UFC_KEYPAD_2);
+  ((LoopState.keyPadM1&mskM1)&&(LoopState.keyPadM1&mskN4)) ? HidUfc.press(UFC_KEYPAD_A) : HidUfc.release(UFC_KEYPAD_A);
+  ((LoopState.keyPadM2&mskM2)&&(LoopState.keyPadM2&mskN1)) ? HidUfc.press(UFC_KEYPAD_4) : HidUfc.release(UFC_KEYPAD_4);
+  ((LoopState.keyPadM2&mskM2)&&(LoopState.keyPadM2&mskN2)) ? HidUfc.press(UFC_KEYPAD_5) : HidUfc.release(UFC_KEYPAD_5);
+  ((LoopState.keyPadM2&mskM2)&&(LoopState.keyPadM2&mskN3)) ? HidUfc.press(UFC_KEYPAD_6) : HidUfc.release(UFC_KEYPAD_6);
+  ((LoopState.keyPadM2&mskM2)&&(LoopState.keyPadM2&mskN4)) ? HidUfc.press(UFC_KEYPAD_B) : HidUfc.release(UFC_KEYPAD_B);
+  ((LoopState.keyPadM3&mskM3)&&(LoopState.keyPadM3&mskN1)) ? HidUfc.press(UFC_KEYPAD_7) : HidUfc.release(UFC_KEYPAD_7);
+  ((LoopState.keyPadM3&mskM3)&&(LoopState.keyPadM3&mskN2)) ? HidUfc.press(UFC_KEYPAD_8) : HidUfc.release(UFC_KEYPAD_8);
+  ((LoopState.keyPadM3&mskM3)&&(LoopState.keyPadM3&mskN3)) ? HidUfc.press(UFC_KEYPAD_9) : HidUfc.release(UFC_KEYPAD_9);
+  ((LoopState.keyPadM3&mskM3)&&(LoopState.keyPadM3&mskN4)) ? HidUfc.press(UFC_KEYPAD_C) : HidUfc.release(UFC_KEYPAD_C);
+  ((LoopState.keyPadM4&mskM4)&&(LoopState.keyPadM4&mskN1)) ? HidUfc.press(UFC_KEYPAD_STAR) : HidUfc.release(UFC_KEYPAD_STAR);
+  ((LoopState.keyPadM4&mskM4)&&(LoopState.keyPadM4&mskN2)) ? HidUfc.press(UFC_KEYPAD_0) : HidUfc.release(UFC_KEYPAD_0);
+  ((LoopState.keyPadM4&mskM4)&&(LoopState.keyPadM4&mskN3)) ? HidUfc.press(UFC_KEYPAD_HASH) : HidUfc.release(UFC_KEYPAD_HASH);
+  ((LoopState.keyPadM4&mskM4)&&(LoopState.keyPadM4&mskN4)) ? HidUfc.press(UFC_KEYPAD_D) : HidUfc.release(UFC_KEYPAD_D);
 }
 
 void loop () {
