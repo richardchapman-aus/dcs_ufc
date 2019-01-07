@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <Encoder.h>
-#include "HID-Project.h"
+#include "HidUfc.h"
 //-- conf
 #define DEBOUNCE_MS 100//10
 #define SPI_HZ_74HC165 16000000
@@ -54,7 +54,7 @@ void setup () {
   digitalWrite(SPI_SS_74HC595,HIGH);
 
   SPI.begin();
-  Gamepad.begin();
+  HidUfc.begin();
 }
 
 void getBtnState () {
@@ -115,24 +115,24 @@ void getRotaryState () {
   posEnc2 = curEnc2;
 }
 
-void setGamepadBtn () {
+void setHidUfcBtn () {
   uint8_t m,i;
   for (m=0b10000000,i=1;m>0b00000000;m>>=1,i++) {
-    (LoopState.btnReg1&m) ? Gamepad.press(i) : Gamepad.release(i);
-    (LoopState.btnReg2&m) ? Gamepad.press(i+8) : Gamepad.release(i+8);
-    (LoopState.btnReg3&m) ? Gamepad.press(i+16) : Gamepad.release(i+16);
+    (LoopState.btnReg1&m) ? HidUfc.press(i) : HidUfc.release(i);
+    (LoopState.btnReg2&m) ? HidUfc.press(i+8) : HidUfc.release(i+8);
+    (LoopState.btnReg3&m) ? HidUfc.press(i+16) : HidUfc.release(i+16);
   }
 }
 
-void setGamepadKeypad () {
+void setHidUfcKeypad () {
 
 }
 
-void setGamepadEnc () {
-  (LoopState.enc1Left) ? Gamepad.press(15) : Gamepad.release(15);
-  (LoopState.enc1Right) ? Gamepad.press(16) : Gamepad.release(16);
-  (LoopState.enc2Left) ? Gamepad.press(9) : Gamepad.release(9);
-  (LoopState.enc2Right) ? Gamepad.press(25) : Gamepad.release(25);
+void setHidUfcEnc () {
+  (LoopState.enc1Left) ? HidUfc.press(15) : HidUfc.release(15);
+  (LoopState.enc1Right) ? HidUfc.press(16) : HidUfc.release(16);
+  (LoopState.enc2Left) ? HidUfc.press(9) : HidUfc.release(9);
+  (LoopState.enc2Right) ? HidUfc.press(25) : HidUfc.release(25);
 }
 
 void loop () {
@@ -143,29 +143,10 @@ void loop () {
   getKeypadState();
   getRotaryState();
 
-  setGamepadBtn();
-  setGamepadKeypad();
-  setGamepadEnc();
-
-  // Move x/y Axis to a new position (16bit)
-  Gamepad.xAxis(random(0xFFFF));
-  Gamepad.yAxis(random(0xFFFF));
-
-  // Go through all dPad positions
-  // values: 0-8 (0==centered)
-  static uint8_t dpad1 = GAMEPAD_DPAD_CENTERED;
-  Gamepad.dPad1(dpad1++);
-  if (dpad1 > GAMEPAD_DPAD_UP_LEFT)
-    dpad1 = GAMEPAD_DPAD_CENTERED;
-
-  static int8_t dpad2 = GAMEPAD_DPAD_CENTERED;
-  Gamepad.dPad2(dpad2--);
-  if (dpad2 < GAMEPAD_DPAD_CENTERED)
-    dpad2 = GAMEPAD_DPAD_UP_LEFT;
-
-  // Functions above only set the values.
-  // This writes the report to the host.
-  Gamepad.write();
+  setHidUfcBtn();
+  setHidUfcKeypad();
+  setHidUfcEnc();
+  HidUfc.write();
 
   delay(DEBOUNCE_MS);
   digitalWrite(LED_Y,LOW);
