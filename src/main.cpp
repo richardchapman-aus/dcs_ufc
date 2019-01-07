@@ -57,7 +57,7 @@ void setup () {
   HidUfc.begin();
 }
 
-void getBtnState () {
+void getButtonState () {
   digitalWrite(LATCH_74HC165,LOW);
   digitalWrite(LATCH_74HC165,HIGH);
   digitalWrite(SPI_SS_74HC165,LOW);
@@ -100,7 +100,7 @@ void getKeypadState () {
   }
 }
 
-void getRotaryState () {
+void getEncoderState () {
   LoopState.enc1Left = false;
   LoopState.enc1Right = false;
   LoopState.enc2Left = false;
@@ -115,7 +115,7 @@ void getRotaryState () {
   posEnc2 = curEnc2;
 }
 
-void setHidUfcBtn () {
+void setHidUfcButton () {
   uint8_t m,i;
   for (m=0b10000000,i=1;m>0b00000000;m>>=1,i++) {
     (LoopState.btnReg1&m) ? HidUfc.press(i) : HidUfc.release(i);
@@ -124,31 +124,48 @@ void setHidUfcBtn () {
   }
 }
 
-void setHidUfcKeypad () {
-
+void setHidUfcEncoder () {
+  (LoopState.enc1Left) ? HidUfc.press(UFC_ENC1_LEFT) : HidUfc.release(UFC_ENC1_LEFT);
+  (LoopState.enc1Right) ? HidUfc.press(UFC_ENC1_RIGHT) : HidUfc.release(UFC_ENC1_RIGHT);
+  (LoopState.enc2Left) ? HidUfc.press(UFC_ENC2_LEFT) : HidUfc.release(UFC_ENC2_LEFT);
+  (LoopState.enc2Right) ? HidUfc.press(UFC_ENC2_RIGHT) : HidUfc.release(UFC_ENC2_RIGHT);
 }
 
-void setHidUfcEnc () {
-  (LoopState.enc1Left) ? HidUfc.press(15) : HidUfc.release(15);
-  (LoopState.enc1Right) ? HidUfc.press(16) : HidUfc.release(16);
-  (LoopState.enc2Left) ? HidUfc.press(9) : HidUfc.release(9);
-  (LoopState.enc2Right) ? HidUfc.press(25) : HidUfc.release(25);
+void setHidUfcKeypad () {
+  uint8_t m;
+  byte mskA1=0b00000001,mskA2=0b00000010,mskA3=0b00000100,mskA4=0b00001000;
+  byte mskB1=0b00001000,mskB2=0b00000100,mskB3=0b00000010,mskB4=0b00000001;
+  (LoopState.keyPadM1&mskA1) ? HidUfc.press(UFC_KEYPAD_1) : HidUfc.release(UFC_KEYPAD_1);
+  (LoopState.keyPadM1&mskA2) ? HidUfc.press(UFC_KEYPAD_2) : HidUfc.release(UFC_KEYPAD_2);
+  (LoopState.keyPadM1&mskA3) ? HidUfc.press(UFC_KEYPAD_3) : HidUfc.release(UFC_KEYPAD_3);
+  (LoopState.keyPadM1&mskA4) ? HidUfc.press(UFC_KEYPAD_A) : HidUfc.release(UFC_KEYPAD_A);
+
+  (LoopState.keyPadM1&mskA1) ? HidUfc.press(UFC_KEYPAD_4) : HidUfc.release(UFC_KEYPAD_4);
+  (LoopState.keyPadM1&mskA2) ? HidUfc.press(UFC_KEYPAD_5) : HidUfc.release(UFC_KEYPAD_5);
+  (LoopState.keyPadM1&mskA3) ? HidUfc.press(UFC_KEYPAD_6) : HidUfc.release(UFC_KEYPAD_6);
+  (LoopState.keyPadM1&mskA4) ? HidUfc.press(UFC_KEYPAD_B) : HidUfc.release(UFC_KEYPAD_B);
+
+  (LoopState.keyPadM1&mskB1) ? HidUfc.press(UFC_KEYPAD_7) : HidUfc.release(UFC_KEYPAD_7);
+  (LoopState.keyPadM1&mskB2) ? HidUfc.press(UFC_KEYPAD_8) : HidUfc.release(UFC_KEYPAD_8);
+  (LoopState.keyPadM1&mskB3) ? HidUfc.press(UFC_KEYPAD_9) : HidUfc.release(UFC_KEYPAD_9);
+  (LoopState.keyPadM1&mskB4) ? HidUfc.press(UFC_KEYPAD_C) : HidUfc.release(UFC_KEYPAD_C);
+
+  (LoopState.keyPadM1&mskB1) ? HidUfc.press(UFC_KEYPAD_STAR) : HidUfc.release(UFC_KEYPAD_STAR);
+  (LoopState.keyPadM1&mskB2) ? HidUfc.press(UFC_KEYPAD_1) : HidUfc.release(UFC_KEYPAD_0);
+  (LoopState.keyPadM1&mskB3) ? HidUfc.press(UFC_KEYPAD_1) : HidUfc.release(UFC_KEYPAD_HASH);
+  (LoopState.keyPadM1&mskB4) ? HidUfc.press(UFC_KEYPAD_1) : HidUfc.release(UFC_KEYPAD_D);
 }
 
 void loop () {
-  //digitalWrite(LED_G,HIGH);
-  //digitalWrite(LED_Y,HIGH);
-
-  getBtnState();
+  getButtonState();
+  getEncoderState();
   getKeypadState();
-  getRotaryState();
 
-  setHidUfcBtn();
+  setHidUfcButton();
+  setHidUfcEncoder();
   setHidUfcKeypad();
-  setHidUfcEnc();
-  HidUfc.write();
 
+  HidUfc.write();
   delay(DEBOUNCE_MS);
-  digitalWrite(LED_Y,LOW);
 }
 //*/
