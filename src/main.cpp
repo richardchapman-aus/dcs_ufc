@@ -151,9 +151,9 @@ void setHidUfcKeypad () {
   (LoopState.keyPadM1&mskB4) ? HidUfc.press(UFC_KEYPAD_C) : HidUfc.release(UFC_KEYPAD_C);
 
   (LoopState.keyPadM1&mskB1) ? HidUfc.press(UFC_KEYPAD_STAR) : HidUfc.release(UFC_KEYPAD_STAR);
-  (LoopState.keyPadM1&mskB2) ? HidUfc.press(UFC_KEYPAD_1) : HidUfc.release(UFC_KEYPAD_0);
-  (LoopState.keyPadM1&mskB3) ? HidUfc.press(UFC_KEYPAD_1) : HidUfc.release(UFC_KEYPAD_HASH);
-  (LoopState.keyPadM1&mskB4) ? HidUfc.press(UFC_KEYPAD_1) : HidUfc.release(UFC_KEYPAD_D);
+  (LoopState.keyPadM1&mskB2) ? HidUfc.press(UFC_KEYPAD_0) : HidUfc.release(UFC_KEYPAD_0);
+  (LoopState.keyPadM1&mskB3) ? HidUfc.press(UFC_KEYPAD_HASH) : HidUfc.release(UFC_KEYPAD_HASH);
+  (LoopState.keyPadM1&mskB4) ? HidUfc.press(UFC_KEYPAD_D) : HidUfc.release(UFC_KEYPAD_D);
 }
 
 void loop () {
