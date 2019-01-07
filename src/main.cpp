@@ -1,10 +1,9 @@
-//*//
 #include <Arduino.h>
 #include <SPI.h>
 #include <Encoder.h>
 #include "HidUfc.h"
 //-- conf
-#define DEBOUNCE_MS 100//10
+#define DEBOUNCE_MS 10
 #define SPI_HZ_74HC165 16000000
 #define SPI_HZ_74HC595 16000000
 //--pins
@@ -17,6 +16,11 @@
 #define ENC_1_R 4
 #define ENC_2_L 5
 #define ENC_2_R 6
+
+long posEnc1;
+long posEnc2;
+Encoder enc1(ENC_1_L,ENC_1_R);
+Encoder enc2(ENC_2_L,ENC_2_R);
 
 SPISettings SPI_74HC165(SPI_HZ_74HC165,MSBFIRST,SPI_MODE0);
 SPISettings SPI_74HC595(SPI_HZ_74HC595,MSBFIRST,SPI_MODE0);
@@ -34,11 +38,6 @@ struct LoopState {
   bool enc2Left;
   bool enc2Right;
 } LoopState;
-
-long posEnc1;
-long posEnc2;
-Encoder enc1(ENC_1_L,ENC_1_R);
-Encoder enc2(ENC_2_L,ENC_2_R);
 
 void setup () {
   pinMode(SPI_SS_74HC165,OUTPUT);
@@ -101,12 +100,14 @@ void getKeypadState () {
 }
 
 void getEncoderState () {
+  long curEnc1;
+  long curEnc2;
   LoopState.enc1Left = false;
   LoopState.enc1Right = false;
   LoopState.enc2Left = false;
   LoopState.enc2Right = false;
-  long curEnc1 = enc1.read()/4;
-  long curEnc2 = enc2.read()/4;
+  curEnc1 = enc1.read()/4;
+  curEnc2 = enc2.read()/4;
   if (curEnc1 < posEnc1) LoopState.enc1Left = true;
   else if (curEnc1 > posEnc1) LoopState.enc1Right = true;
   if (curEnc2 < posEnc2) LoopState.enc2Left = true;
@@ -168,4 +169,3 @@ void loop () {
   HidUfc.write();
   delay(DEBOUNCE_MS);
 }
-//*/
