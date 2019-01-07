@@ -118,6 +118,7 @@ void getEncoderState () {
 
 void setHidUfcButton () {
   uint8_t m,i;
+  //TODO: Best if distinct constant assignement
   for (m=0b10000000,i=1;m>0b00000000;m>>=1,i++) {
     (LoopState.btnReg1&m) ? HidUfc.press(i) : HidUfc.release(i);
     (LoopState.btnReg2&m) ? HidUfc.press(i+8) : HidUfc.release(i+8);
